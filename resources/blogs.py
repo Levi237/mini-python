@@ -56,7 +56,7 @@ class BlogList(Resource):
         return new_blogs
 
     @marshal_with(blog_fields)
-    def blog(self):
+    def post(self):
         args = self.reqparse.parse_args()
         print(args, 'args hitting')
         blog = models.Blog.create(**args)
