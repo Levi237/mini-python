@@ -5,16 +5,16 @@ from flask_restful import (Resource, Api, reqparse, fields, marshal,
 
 import models
 
-post_fields = {
+blog_fields = {
     'id': fields.Integer,
-    'title': fields.String,
+    'title': fields.String
     # 'location': fields.String,
     # 'entry': fields.String,
     # 'imageUrl': fields.String,
     # 'userId': fields.Integer,
 }
 
-class PostList(Resource):
+class BlogList(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(
@@ -51,18 +51,18 @@ class PostList(Resource):
 
     
     def get(self):
-        new_posts = [marshal(post, post_fields)
-                    for post in models.Post.select()]
-        return new_posts
+        new_blogs = [marshal(blog, blog_fields)
+                    for blog in models.Blog.select()]
+        return new_blogs
 
-    @marshal_with(post_fields)
-    def post(self):
+    @marshal_with(blog_fields)
+    def blog(self):
         args = self.reqparse.parse_args()
         print(args, 'args hitting')
-        post = models.Post.create(**args)
-        return (post, 201)
+        blog = models.Blog.create(**args)
+        return (blog, 201)
 
-class Post(Resource):
+class Blog(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -98,38 +98,38 @@ class Post(Resource):
         # )  
         super().__init__()
 
-    @marshal_with(post_fields)
+    @marshal_with(blog_fields)
     def get(self, id):
         try:
-            post = models.Post.get(models.Post.id==id)
-        except models.Post.DoesNotExist:
+            blog = models.Blog.get(models.Blog.id==id)
+        except models.Blog.DoesNotExist:
             abort(404)
         else:
-            return (post, 200)
+            return (blog, 200)
 
-    @marshal_with(post_fields)
+    @marshal_with(blog_fields)
     def put(self, id):
         args = self.reqparse.parse_args()
-        query = models.Post.update(**args).where(models.Post.id==id)
+        query = models.Blog.update(**args).where(models.Blog.id==id)
         query.execute()
-        return (models.Post.get(models.Post.id==id), 200)
+        return (models.Blog.get(models.Blog.id==id), 200)
     def delete(self, id):
-        query = models.Post.delete().where(models.Post.id==id)
+        query = models.Blog.delete().where(models.Blog.id==id)
         query.execute()
         
         return {'message': 'resource deleted'}
 
 
-posts_api = Blueprint('resources.posts', __name__)
-api = Api(posts_api)
+blogs_api = Blueprint('resources.blogs', __name__)
+api = Api(blogs_api)
 
 api.add_resource(
-    PostList,
-    '/posts',
-    # endpoint='posts'
+    BlogList,
+    '/blogs',
+    # endpoint='blogs'
 )
 api.add_resource(
-    Post,
-    '/posts/<int:id>',
-    # endpoint='post'
+    Blog,
+    '/blogs/<int:id>',
+    # endpoint='blog'
 )
