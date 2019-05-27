@@ -6,6 +6,11 @@ from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('blogs.sqlite')
+### psql
+### CREATE DATABASE dogs;
+### CREATE USER leviuser WITH PASSWORD 'password';
+### GRANT ALL PRIVILEGES ON DATABASE dogs TO leviuser;
+# DATABASE = PostgresqlDatabase('blogs', user="leviuser", password="password")
 
 
 class User(UserMixin, Model):
@@ -32,11 +37,12 @@ class User(UserMixin, Model):
             raise Exception('user with that email already exists')
 
 class Blog(Model):
-    title = CharField()
+    title    = CharField()
     # location = CharField()
-    # entry = TextField()
+    # entry    = CharField()
     # imageUrl = CharField()
-    # userId = CharField()
+    # userId   = CharField()
+    # created_by = ForeignKeyField(User, related_name='blog_set')
     # created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:

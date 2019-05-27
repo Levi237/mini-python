@@ -13,10 +13,8 @@ user_fields = {
 
 
 class UserList(Resource):
-
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-
         self.reqparse.add_argument(
             'username',
             required=True,

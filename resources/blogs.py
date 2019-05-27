@@ -7,10 +7,10 @@ import models
 
 blog_fields = {
     'id': fields.Integer,
-    'title': fields.String
-    # 'location': fields.String,
-    # 'entry': fields.String,
-    # 'imageUrl': fields.String,
+    'title': fields.String,
+    'location': fields.String,
+    'entry': fields.String,
+    'imageUrl': fields.String
     # 'userId': fields.Integer,
 }
 
@@ -23,24 +23,24 @@ class BlogList(Resource):
             help='No title provided',
             location=['form', 'json']
         )
-        # self.reqparse.add_argument(
-        #     'location',
-        #     required=False,
-        #     help='No location provided',
-        #     location=['form', 'json']
-        # )
-        # self.reqparse.add_argument(
-        #     'entry',
-        #     required=False,
-        #     help='No entry provided',
-        #     location=['form', 'json']
-        # )
-        # self.reqparse.add_argument(
-        #     'imageUrl',
-        #     required=False,
-        #     help='No image url provided',
-        #     location=['form', 'json']
-        # )      
+        self.reqparse.add_argument(
+            'location',
+            required=False,
+            help='No location provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'entry',
+            required=False,
+            help='No entry provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'imageUrl',
+            required=False,
+            help='No image url provided',
+            location=['form', 'json']
+        )      
         # self.reqparse.add_argument(
         #     'userId',
         #     required=False,
@@ -52,7 +52,7 @@ class BlogList(Resource):
     
     def get(self):
         new_blogs = [marshal(blog, blog_fields)
-                    for blog in models.Blog.select()]
+            for blog in models.Blog.select()]
         return new_blogs
 
     @marshal_with(blog_fields)
@@ -66,30 +66,31 @@ class Blog(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+
         self.reqparse.add_argument(
             'title',
             required=False,
             help='No title provided',
             location=['form', 'json']
         )
-        # self.reqparse.add_argument(
-        #     'location',
-        #     required=False,
-        #     help='No title provided',
-        #     location=['form', 'json']
-        # )
-        # self.reqparse.add_argument(
-        #     'entry',
-        #     required=False,
-        #     help='No title provided',
-        #     location=['form', 'json']
-        # )
-        # self.reqparse.add_argument(
-        #     'imageUrl',
-        #     required=False,
-        #     help='No title provided',
-        #     location=['form', 'json']
-        # )       
+        self.reqparse.add_argument(
+            'location',
+            required=False,
+            help='No title provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'entry',
+            required=False,
+            help='No title provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'imageUrl',
+            required=False,
+            help='No title provided',
+            location=['form', 'json']
+        )       
         # self.reqparse.add_argument(
         #     'userId',
         #     required=False,
@@ -126,10 +127,10 @@ api = Api(blogs_api)
 api.add_resource(
     BlogList,
     '/blogs',
-    # endpoint='blogs'
+    endpoint='blogs'
 )
 api.add_resource(
     Blog,
     '/blogs/<int:id>',
-    # endpoint='blog'
+    endpoint='blog'
 )

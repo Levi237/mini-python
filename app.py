@@ -6,12 +6,22 @@ import models
 from resources.blogs import blogs_api
 from resources.users import users_api
 
+import config
 
-DEBUG = True
-PORT = 7000
 
+login_manager = LoginManager()
 
 app = Flask(__name__)
+
+app.secret_key = config.SECRET_KEY
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(userid):
+    try:
+        return models.User.get(models.User.id==userid)
+    except models.DoesNotExist:
+        return None
 
 CORS(blogs_api, origins=["http://localhost:3000"], supports_credentials=True)
 CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
@@ -35,4 +45,4 @@ def index():
 
 if __name__ == '__main__':
     models.initialize()
-    app.run(debug=DEBUG, port=PORT)
+    app.run(debug=config.DEBUG, port=config.PORT)
