@@ -34,7 +34,7 @@ class UserList(Resource):
             location=['form', 'json']
         )
         self.reqparse.add_argument(
-            'verify-password',
+            'verify_password',
             required=True,
             help='No password verification provided',
             location=['form', 'json']

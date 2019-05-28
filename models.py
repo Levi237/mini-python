@@ -5,12 +5,12 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('blogs.sqlite')
+DATABASE = SqliteDatabase('stories.sqlite')
 ### psql
 ### CREATE DATABASE dogs;
-### CREATE USER leviuser WITH PASSWORD 'password';
-### GRANT ALL PRIVILEGES ON DATABASE dogs TO leviuser;
-# DATABASE = PostgresqlDatabase('blogs', user="leviuser", password="password")
+### CREATE USER levi WITH PASSWORD 'password';
+### GRANT ALL PRIVILEGES ON DATABASE blogs TO levi;
+# DATABASE = PostgresqlDatabase('blogs', user='levi', password='123')
 
 
 class User(UserMixin, Model):
@@ -38,12 +38,12 @@ class User(UserMixin, Model):
 
 class Blog(Model):
     title    = CharField()
-    # location = CharField()
-    # entry    = CharField()
-    # imageUrl = CharField()
-    # userId   = CharField()
-    # created_by = ForeignKeyField(User, related_name='blog_set')
-    # created_at = DateTimeField(default=datetime.datetime.now)
+    location = CharField()
+    entry    = CharField()
+    imageUrl = CharField()
+    userId   = CharField()
+    created_by = ForeignKeyField(User, related_name='blog_set')
+    created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = DATABASE

@@ -10,8 +10,8 @@ blog_fields = {
     'title': fields.String,
     'location': fields.String,
     'entry': fields.String,
-    'imageUrl': fields.String
-    # 'userId': fields.Integer,
+    'imageUrl': fields.String,
+    'userId': fields.String,
 }
 
 class BlogList(Resource):
@@ -41,12 +41,12 @@ class BlogList(Resource):
             help='No image url provided',
             location=['form', 'json']
         )      
-        # self.reqparse.add_argument(
-        #     'userId',
-        #     required=False,
-        #     help='No userId provided',
-        #     location=['form', 'json']
-        # )     
+        self.reqparse.add_argument(
+            'userId',
+            required=False,
+            help='No userId provided',
+            location=['form', 'json']
+        )     
         super().__init__()
 
     
@@ -59,7 +59,7 @@ class BlogList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         print(args, 'args hitting')
-        blog = models.Blog.create(**args)
+        blog = models.Blog.create(created_by=1, **args)
         return (blog, 201)
 
 class Blog(Resource):
@@ -91,12 +91,12 @@ class Blog(Resource):
             help='No title provided',
             location=['form', 'json']
         )       
-        # self.reqparse.add_argument(
-        #     'userId',
-        #     required=False,
-        #     help='No userId provided',
-        #     location=['form', 'json']
-        # )  
+        self.reqparse.add_argument(
+            'userId',
+            required=False,
+            help='No userId provided',
+            location=['form', 'json']
+        )  
         super().__init__()
 
     @marshal_with(blog_fields)
