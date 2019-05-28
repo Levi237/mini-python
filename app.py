@@ -1,6 +1,6 @@
 from flask import Flask, g
 from flask_cors import CORS
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 import models
 
 from resources.blogs import blogs_api
@@ -29,11 +29,15 @@ CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
 app.register_blueprint(blogs_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/users')
 
+
 @app.before_request
 def before_request():
     g.db = models.DATABASE
     g.db.connect()
-
+    #and current_user to the global object so you can access it anywhere
+#     g.user = current_user
+# # anywhere you can grab the full user object by running 
+# g.user._get_current_object(),
 @app.after_request
 def after_request(response):
     g.db.close()
