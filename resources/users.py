@@ -41,6 +41,13 @@ class UserList(Resource):
         )
         super().__init__()
 
+    # @login_required # from flask_login modules
+    def get(self):
+
+        new_user = [marshal(user, user_fields) for user in models.User.select()]
+
+        return new_user
+
     def post(self):
         args = self.reqparse.parse_args()
         if args['password'] == args['verify_password']:
