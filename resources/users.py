@@ -4,11 +4,15 @@ from flask import jsonify, Blueprint, abort, make_response
 
 from flask_restful import (Resource, Api, reqparse, inputs, fields, marshal, marshal_with, url_for)
 
+
 from flask_login import login_user, logout_user, login_required, current_user
 import models
 
 user_fields = {
+    'id': fields.Integer,
     'username': fields.String,
+    'password': fields.String,
+    # 'verify_password': fields.String,
 }
 
 
@@ -43,10 +47,8 @@ class UserList(Resource):
 
     # @login_required # from flask_login modules
     def get(self):
-
-        new_user = [marshal(user, user_fields) for user in models.User.select()]
-
-        return new_user
+        all_users = [marshal(user, user_fields) for user in models.User.select()]
+        return all_users
 
     def post(self):
         args = self.reqparse.parse_args()
@@ -61,10 +63,79 @@ class UserList(Resource):
                 'error': 'Password and password verification do not match'
             }), 400)
 
+class User(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'username',
+            required=True,
+            help='No username provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'email',
+            required=True,
+            help='No email provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'password',
+            required=True,
+            help='No password provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'verify_password',
+            required=False,
+            help='No password verification provided',
+            location=['form', 'json']
+        )
+        super().__init__()
+
+
+    @marshal_with(user_fields)
+    def get(self, id):
+        try:
+            user = models.User.get(models.User.id==id)
+        except models.User.DoesNotExist:
+            abort(404)
+        else:
+            return (user, 200)
+
+    # @marshal_with(user_fields)
+    # def put(self, id):
+    #     args = self.reqparse.parse_args()
+    #     query = models.User.update(**args).where(models.User.id==id)
+    #     query.execute()
+    #     return (models.User.get(models.User.id==id), 200)
+
+    @marshal_with(user_fields)
+    def put(self, id):
+        try:
+            args = self.reqparse.parse_args()
+            new_args = {key: value for key, value in args.items() if value is not None}
+            query = models.User.update(**new_args).where(models.User.id==id)
+            query.execute()
+        except models.User.DoesNotExist:
+            abort(404)
+        else:
+            return (models.User.get(models.User.id==id), 200)
+
+    
+    def delete(self, id):
+        query = models.User.delete().where(models.User.id==id)
+        query.execute()
+        return {'message': 'user deleted'}
+
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
-    '/registration',
+    '/register',
     endpoint='users'
+)
+api.add_resource(
+    User,
+    '/<int:id>',
+    endpoint='user'
 )

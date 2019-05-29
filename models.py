@@ -7,16 +7,17 @@ from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('stories.sqlite')
 ### psql
-### CREATE DATABASE dogs;
+### CREATE DATABASE blogs;
 ### CREATE USER levi WITH PASSWORD 'password';
 ### GRANT ALL PRIVILEGES ON DATABASE blogs TO levi;
 # DATABASE = PostgresqlDatabase('blogs', user='levi', password='123')
 
 
 class User(UserMixin, Model):
-    username = CharField(unique=True)
+    username = CharField()
     email    = CharField(unique=True)
     password = CharField()
+    # verify_password = CharField()
 
     class Meta:
         database = DATABASE

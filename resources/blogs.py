@@ -114,6 +114,7 @@ class Blog(Resource):
         query = models.Blog.update(**args).where(models.Blog.id==id)
         query.execute()
         return (models.Blog.get(models.Blog.id==id), 200)
+        
     def delete(self, id):
         query = models.Blog.delete().where(models.Blog.id==id)
         query.execute()
