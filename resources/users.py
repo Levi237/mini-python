@@ -1,5 +1,7 @@
 import json
 
+from flask_bcrypt import check_password_hash
+
 from flask import jsonify, Blueprint, abort, make_response
 
 from flask_restful import (Resource, Api, reqparse, inputs, fields, marshal, marshal_with, url_for)
@@ -127,15 +129,59 @@ class User(Resource):
         query.execute()
         return {'message': 'user deleted'}
 
+
+class Login(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'email',
+            required=True,
+            help='No email provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'password',
+            required=True,
+            help='No password provided',
+            location=['form', 'json']
+        )
+        super().__init__()
+    def post(self):
+        try:
+            args = self.reqparse.parse_args()
+            user = models.User.get(models.User.username==args['username'])
+            if(user):
+                if(check_password_hash(user.password, args['password'])):
+                    return make_response(
+                        json.dumps({
+                            'user': marshal(user, user_fields),
+                            'message': 'success', 
+                        }), 200)
+                else:
+                    return make_response(
+                        json.dumps({
+                            'message': 'Incorrect password'
+                        }), 200)
+        except models.User.DoesNotExist:
+            return make_response(
+                json.dumps({
+                    'message': 'Username does not exist'
+                }), 200)
+
+
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
     '/register',
-    endpoint='users'
+    # endpoint='users'
 )
 api.add_resource(
     User,
     '/<int:id>',
-    endpoint='user'
+    # endpoint='user'
+)
+api.add_resource(
+    Login,
+    '/login',
 )

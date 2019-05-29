@@ -13,6 +13,28 @@ DATABASE = SqliteDatabase('newdb.sqlite')
 # DATABASE = PostgresqlDatabase('blogs', user='levi', password='123')
 
 
+
+
+
+#################### EXAMPLE FOR ONE TO MANY
+
+# class BaseModel(Model):
+#     class Meta:
+#         database = psql_db
+
+# class Authors(BaseModel):
+#     id = PrimaryKeyField(null=False)
+#     name = CharField(max_length=100, unique=True)
+
+# class Books(BaseModel):
+#     id = PrimaryKeyField(null=False)
+#     title = CharField(max_length=100)
+#     author = ForeignKeyField(Authors, related_name='author_details')
+#     edition = CharField(max_length=100)
+#     year_written = SmallIntegerField()
+#     price = DecimalField()
+
+
 class User(UserMixin, Model):
     username = CharField()
     email    = CharField(unique=True)

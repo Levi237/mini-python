@@ -36,10 +36,11 @@ app.register_blueprint(comments_api, url_prefix='/api/v1')
 def before_request():
     g.db = models.DATABASE
     g.db.connect()
-    #and current_user to the global object so you can access it anywhere
-#     g.user = current_user
-# # anywhere you can grab the full user object by running 
-# g.user._get_current_object(),
+    ### most recent code added
+    g.user = current_user
+    #anywhere you can grab the full user object by running 
+    g.user._get_current_object()
+
 @app.after_request
 def after_request(response):
     g.db.close()
