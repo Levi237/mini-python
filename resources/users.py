@@ -1,13 +1,10 @@
 import json
 
 from flask_bcrypt import check_password_hash
-
 from flask import jsonify, Blueprint, abort, make_response
-
 from flask_restful import (Resource, Api, reqparse, inputs, fields, marshal, marshal_with, url_for)
-
-
 from flask_login import login_user, logout_user, login_required, current_user
+
 import models
 
 user_fields = {
@@ -16,6 +13,7 @@ user_fields = {
     'password': fields.String,
     # 'verify_password': fields.String,
 }
+
 
 
 class UserList(Resource):
@@ -173,7 +171,7 @@ users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
-    '/register',
+    '/user',
     # endpoint='users'
 )
 api.add_resource(
