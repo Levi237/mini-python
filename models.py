@@ -5,7 +5,7 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('stories.sqlite')
+DATABASE = SqliteDatabase('newdb.sqlite')
 ### psql
 ### CREATE DATABASE blogs;
 ### CREATE USER levi WITH PASSWORD 'password';
@@ -49,7 +49,13 @@ class Blog(Model):
     class Meta:
         database = DATABASE
 
+class  Comment(Model):
+    comment = CharField()
+
+    class Meta:
+        database = DATABASE
+
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Blog], safe=True)
+    DATABASE.create_tables([User, Blog, Comment], safe=True)
     DATABASE.close()
