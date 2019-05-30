@@ -30,16 +30,13 @@ CORS(comments_api, origins=["http://localhost:3000"], supports_credentials=True)
 
 app.register_blueprint(blogs_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/users')
-app.register_blueprint(comments_api, url_prefix='/api/v1')
+app.register_blueprint(comments_api, url_prefix='/api/v1/blogs')
 
 @app.before_request
 def before_request():
     g.db = models.DATABASE
     g.db.connect()
-    ### most recent code added
     g.user = current_user
-    #anywhere you can grab the full user object by running 
-    # g.user._get_current_object()
 
 @app.after_request
 def after_request(response):

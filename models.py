@@ -5,7 +5,7 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('blogs.sqlite')
+DATABASE = SqliteDatabase('blogssss.sqlite')
 ### psql
 ### CREATE DATABASE blogs;
 ### CREATE USER levi WITH PASSWORD 'password';
@@ -69,8 +69,9 @@ class Blog(Model):
     class Meta:
         database = DATABASE
 
-class  Comment(Model):
+class Comment(Model):
     comment = CharField()
+    created_by = ForeignKeyField(User, related_name='comment_set')
 
     class Meta:
         database = DATABASE

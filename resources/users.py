@@ -149,7 +149,7 @@ class Login(Resource):
         try:
             args = self.reqparse.parse_args()
             user = models.User.get(models.User.email==args['email'])
-            if(user):
+            if(user.email):
                 if(check_password_hash(user.password, args['password'])):
                     return make_response(
                         json.dumps({

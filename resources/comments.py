@@ -8,6 +8,7 @@ import models
 comment_fields = {
     'id': fields.Integer,
     'comment': fields.String,
+    'blog_id': fields.String,
     'created_by': fields.String,
 }
 
@@ -34,7 +35,7 @@ class CommentList(Resource):
         print(g.user._get_current_object().username, "<------- get current user")
         userId = g.user._get_current_object()
         print(userId, "<---------userId")
-        comment = models.Blog.create(created_by=userId, **args)
+        comment = models.Comment.create(created_by=userId, **args)
         return (comment, 201)
 
 
@@ -44,7 +45,7 @@ class Comment(Resource):
         self.reqparse.add_argument(
             'comment',
             required=False,
-            help='No title provided',
+            help='No comment provided',
             location=['form', 'json']
         )  
         super().__init__()
