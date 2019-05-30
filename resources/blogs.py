@@ -1,7 +1,7 @@
-from flask import jsonify, Blueprint, abort
+from flask import jsonify, Blueprint, abort, g
 
-from flask_restful import (Resource, Api, reqparse, fields, marshal,
-                               marshal_with, url_for)
+from flask_restful import (Resource, Api, reqparse, fields, marshal, marshal_with, url_for)
+from flask_login import current_user
 
 import models
 
@@ -10,8 +10,7 @@ blog_fields = {
     'title': fields.String,
     'location': fields.String,
     'entry': fields.String,
-    'imageUrl': fields.String,
-    'userId': fields.String,
+    'created_by': fields.String,
 }
 
 class BlogList(Resource):
@@ -34,19 +33,7 @@ class BlogList(Resource):
             required=False,
             help='No entry provided',
             location=['form', 'json']
-        )
-        self.reqparse.add_argument(
-            'imageUrl',
-            required=False,
-            help='No image url provided',
-            location=['form', 'json']
-        )      
-        self.reqparse.add_argument(
-            'userId',
-            required=False,
-            help='No userId provided',
-            location=['form', 'json']
-        )     
+        ) 
         super().__init__()
 
     
@@ -59,7 +46,10 @@ class BlogList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         print(args, 'args hitting')
-        blog = models.Blog.create(created_by=1, **args)
+        print(g.user._get_current_object().username, "<------- get current user")
+        userId = g.user._get_current_object()
+        print(userId, "<---------userId")
+        blog = models.Blog.create(created_by=userId, **args)
         return (blog, 201)
 
 class Blog(Resource):
@@ -85,18 +75,6 @@ class Blog(Resource):
             help='No title provided',
             location=['form', 'json']
         )
-        self.reqparse.add_argument(
-            'imageUrl',
-            required=False,
-            help='No title provided',
-            location=['form', 'json']
-        )       
-        self.reqparse.add_argument(
-            'userId',
-            required=False,
-            help='No userId provided',
-            location=['form', 'json']
-        )  
         super().__init__()
 
     @marshal_with(blog_fields)
@@ -114,7 +92,7 @@ class Blog(Resource):
         query = models.Blog.update(**args).where(models.Blog.id==id)
         query.execute()
         return (models.Blog.get(models.Blog.id==id), 200)
-        
+
     def delete(self, id):
         query = models.Blog.delete().where(models.Blog.id==id)
         query.execute()

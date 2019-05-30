@@ -39,7 +39,7 @@ def before_request():
     ### most recent code added
     g.user = current_user
     #anywhere you can grab the full user object by running 
-    g.user._get_current_object()
+    # g.user._get_current_object()
 
 @app.after_request
 def after_request(response):

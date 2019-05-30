@@ -10,6 +10,7 @@ import models
 user_fields = {
     'id': fields.Integer,
     'username': fields.String,
+    'email': fields.String,
     'password': fields.String,
     # 'verify_password': fields.String,
 }
@@ -147,7 +148,7 @@ class Login(Resource):
     def post(self):
         try:
             args = self.reqparse.parse_args()
-            user = models.User.get(models.User.username==args['username'])
+            user = models.User.get(models.User.email==args['email'])
             if(user):
                 if(check_password_hash(user.password, args['password'])):
                     return make_response(
@@ -163,7 +164,7 @@ class Login(Resource):
         except models.User.DoesNotExist:
             return make_response(
                 json.dumps({
-                    'message': 'Username does not exist'
+                    'message': 'Email does not exist'
                 }), 200)
 
 
@@ -171,7 +172,7 @@ users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
-    '/user',
+    '/register',
     # endpoint='users'
 )
 api.add_resource(

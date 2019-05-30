@@ -1,12 +1,14 @@
-from flask import jsonify, Blueprint, abort
+from flask import jsonify, Blueprint, abort, g
 
 from flask_restful import (Resource, Api, reqparse, fields, marshal,marshal_with, url_for)
+from flask_login import current_user
 
 import models
 
 comment_fields = {
     'id': fields.Integer,
     'comment': fields.String,
+    'created_by': fields.String,
 }
 
 class CommentList(Resource):
@@ -19,7 +21,6 @@ class CommentList(Resource):
             location=['form', 'json']
         )  
         super().__init__()
-
     
     def get(self):
         new_comments = [marshal(comment, comment_fields)
@@ -30,9 +31,12 @@ class CommentList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         print(args, 'args hitting')
-        # comment = models.Comment.create(created_by=1, **args)
-        comment = models.Comment.create(**args)
+        print(g.user._get_current_object().username, "<------- get current user")
+        userId = g.user._get_current_object()
+        print(userId, "<---------userId")
+        comment = models.Blog.create(created_by=userId, **args)
         return (comment, 201)
+
 
 class Comment(Resource):
     def __init__(self):
