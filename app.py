@@ -24,9 +24,9 @@ def load_user(userid):
         return models.User.get(models.User.id==userid)
     except models.DoesNotExist:
         return None
-CORS(blogs_api, origins=["http://localhost:3001", "http://mini-python4.herokuapp.com"], supports_credentials=True)
-CORS(users_api, origins=["http://localhost:3001", "http://mini-python4.herokuapp.com"], supports_credentials=True)
-CORS(comments_api, origins=["http://localhost:3001", "http://mini-python4.herokuapp.com"], supports_credentials=True)
+CORS(blogs_api, origins=["http://localhost:3001", "http://mini-project4.herokuapp.com"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3001", "http://mini-project4.herokuapp.com"], supports_credentials=True)
+CORS(comments_api, origins=["http://localhost:3001", "http://mini-project4.herokuapp.com"], supports_credentials=True)
 # CORS(blogs_api, origins=["http://localhost:3001"], supports_credentials=True)
 # CORS(users_api, origins=["http://localhost:3001"], supports_credentials=True)
 # CORS(comments_api, origins=["http://localhost:3001"], supports_credentials=True)
