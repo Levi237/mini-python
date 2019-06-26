@@ -5,13 +5,17 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('blogssss.sqlite')
+import os
+
+from playhouse.db_url import connect
+
+DATABASE = connect(os.environ.get('DATABASE_URL'))
+# DATABASE = SqliteDatabase('blogs.sqlite')
 ### psql
 ### CREATE DATABASE blogs;
 ### CREATE USER levi WITH PASSWORD 'password';
 ### GRANT ALL PRIVILEGES ON DATABASE blogs TO levi;
-# DATABASE = PostgresqlDatabase('blogs', user='levi', password='123')
-
+# DATABASE = PostgresqlDatabase('blogs', user='admin', password='myPassword')
 
 
 

@@ -12,7 +12,6 @@ user_fields = {
     'username': fields.String,
     'email': fields.String,
     'password': fields.String,
-    # 'verify_password': fields.String,
 }
 
 
@@ -103,13 +102,6 @@ class User(Resource):
         else:
             return (user, 200)
 
-    # @marshal_with(user_fields)
-    # def put(self, id):
-    #     args = self.reqparse.parse_args()
-    #     query = models.User.update(**args).where(models.User.id==id)
-    #     query.execute()
-    #     return (models.User.get(models.User.id==id), 200)
-
     @marshal_with(user_fields)
     def put(self, id):
         try:
@@ -149,6 +141,7 @@ class Login(Resource):
         try:
             args = self.reqparse.parse_args()
             user = models.User.get(models.User.email==args['email'])
+            login_user(user)
             if(user.email):
                 if(check_password_hash(user.password, args['password'])):
                     return make_response(
