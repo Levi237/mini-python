@@ -25,9 +25,9 @@ def load_user(userid):
         return models.User.get(models.User.id==userid)
     except models.DoesNotExist:
         return None
-CORS(blogs_api, origins=["http://localhost:3000", "https://limitless-cove-90189.herokuapp.com/"], supports_credentials=True)
-CORS(users_api, origins=["http://localhost:3000", "https://limitless-cove-90189.herokuapp.com/"], supports_credentials=True)
-CORS(comments_api, origins=["http://localhost:3000", "https://limitless-cove-90189.herokuapp.com/"], supports_credentials=True)
+CORS(blogs_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
+CORS(comments_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
 # CORS(blogs_api, origins=["http://localhost:3000"], supports_credentials=True)
 # CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
 # CORS(comments_api, origins=["http://localhost:3000"], supports_credentials=True)
