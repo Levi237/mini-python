@@ -1,2 +1,2 @@
-web: gunicorn app:app
+web: gunicorn application:app
 heroku config:set ON_HEROKU=1
