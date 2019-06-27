@@ -4,6 +4,7 @@ from flask_login import LoginManager, current_user
 import models
 import os
 
+
 from resources.blogs import blogs_api
 from resources.users import users_api
 from resources.comments import comments_api
@@ -24,12 +25,12 @@ def load_user(userid):
         return models.User.get(models.User.id==userid)
     except models.DoesNotExist:
         return None
-# CORS(blogs_api, origins=["http://localhost:3001", "http://mini-project4.herokuapp.com"], supports_credentials=True)
-# CORS(users_api, origins=["http://localhost:3001", "http://mini-project4.herokuapp.com"], supports_credentials=True)
-# CORS(comments_api, origins=["http://localhost:3001", "http://mini-project4.herokuapp.com"], supports_credentials=True)
-CORS(blogs_api, origins=["http://localhost:3001"], supports_credentials=True)
-CORS(users_api, origins=["http://localhost:3001"], supports_credentials=True)
-CORS(comments_api, origins=["http://localhost:3001"], supports_credentials=True)
+CORS(blogs_api, origins=["http://localhost:3000", "https://limitless-cove-90189.herokuapp.com/"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3000", "https://limitless-cove-90189.herokuapp.com/"], supports_credentials=True)
+CORS(comments_api, origins=["http://localhost:3000", "https://limitless-cove-90189.herokuapp.com/"], supports_credentials=True)
+# CORS(blogs_api, origins=["http://localhost:3000"], supports_credentials=True)
+# CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
+# CORS(comments_api, origins=["http://localhost:3000"], supports_credentials=True)
 
 app.register_blueprint(blogs_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/users')
@@ -53,6 +54,7 @@ def index():
 if 'ON_HEROKU' in os.environ:
     print('hitting ')
     models.initialize()
+
 if __name__ == '__main__':
     models.initialize()
     app.run(debug=config.DEBUG, port=config.PORT)
