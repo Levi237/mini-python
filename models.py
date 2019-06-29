@@ -1,17 +1,16 @@
 import datetime
+import os
 
 from peewee import *
 
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-import os
-
 from playhouse.db_url import connect
 
 DATABASE = connect(os.environ.get('postgres://tovozpuskotolm:97df10193701f1e0dee2e5fa7003705178385d390829136fb05eac6370395d88@ec2-54-83-1-101.compute-1.amazonaws.com:5432/df785ca9cdnia1'))
-
 # DATABASE = SqliteDatabase('blogs.sqlite')
+
 ### psql
 ### CREATE DATABASE blogs;
 ### CREATE USER levi WITH PASSWORD 'password';
