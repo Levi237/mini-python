@@ -1,3 +1,3 @@
 DEBUG = True
-PORT = 7000
+PORT = 8000
 SECRET_KEY = 'hello peta'

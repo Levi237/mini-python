@@ -8,8 +8,8 @@ from flask_login import UserMixin
 
 from playhouse.db_url import connect
 
-DATABASE = connect(os.environ.get('postgres://tovozpuskotolm:97df10193701f1e0dee2e5fa7003705178385d390829136fb05eac6370395d88@ec2-54-83-1-101.compute-1.amazonaws.com:5432/df785ca9cdnia1'))
-# DATABASE = SqliteDatabase('blogs.sqlite')
+# DATABASE = connect(os.environ.get('postgres://tovozpuskotolm:97df10193701f1e0dee2e5fa7003705178385d390829136fb05eac6370395d88@ec2-54-83-1-101.compute-1.amazonaws.com:5432/df785ca9cdnia1'))
+DATABASE = SqliteDatabase('users.sqlite')
 
 ### psql
 ### CREATE DATABASE blogs;
@@ -63,24 +63,8 @@ class User(UserMixin, Model):
         else: 
             raise Exception('user with that email already exists')
 
-class Blog(Model):
-    title    = CharField()
-    location = CharField()
-    entry    = CharField()
-    created_by = ForeignKeyField(User, related_name='blog_set')
-    created_at = DateTimeField(default=datetime.datetime.now)
-
-    class Meta:
-        database = DATABASE
-
-class Comment(Model):
-    comment = CharField()
-    created_by = ForeignKeyField(User, related_name='comment_set')
-
-    class Meta:
-        database = DATABASE
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Blog, Comment], safe=True)
+    DATABASE.create_tables([User], safe=True)
     DATABASE.close()

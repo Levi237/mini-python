@@ -5,9 +5,8 @@ import models
 import os
 
 
-from resources.blogs import blogs_api
 from resources.users import users_api
-from resources.comments import comments_api
+
 
 import config
 
@@ -25,16 +24,12 @@ def load_user(userid):
         return models.User.get(models.User.id==userid)
     except models.DoesNotExist:
         return None
-CORS(blogs_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
-CORS(users_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
-CORS(comments_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
-# CORS(blogs_api, origins=["http://localhost:3000"], supports_credentials=True)
-# CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
-# CORS(comments_api, origins=["http://localhost:3000"], supports_credentials=True)
+        
+# CORS(users_api, origins=["http://localhost:3000", "https://mini-react.herokuapp.com"], supports_credentials=True)
 
-app.register_blueprint(blogs_api, url_prefix='/api/v1')
+CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
+
 app.register_blueprint(users_api, url_prefix='/users')
-app.register_blueprint(comments_api, url_prefix='/api/v1/blogs')
 
 @app.before_request
 def before_request():
